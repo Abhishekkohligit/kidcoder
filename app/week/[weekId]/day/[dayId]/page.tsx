@@ -97,12 +97,18 @@ export default function DayPage() {
               ← Back to Lesson
             </button>
             <div className="text-sm font-bold">{day.emoji} {day.title}</div>
-            <div className="text-sm opacity-80">{currentQ + 1}/{day.questions.length}</div>
+            <button
+              onClick={() => { setCurrentQ(0); setCorrectCount(0); }}
+              className="text-white/70 hover:text-white text-sm"
+            >
+              🔄 Reset
+            </button>
           </div>
         </header>
 
         <main className="max-w-2xl mx-auto px-4 py-8">
           <QuizQuestion
+            key={currentQ}
             question={day.questions[currentQ]}
             questionNumber={currentQ + 1}
             total={day.questions.length}

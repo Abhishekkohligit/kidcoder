@@ -24,8 +24,49 @@ export default function QuizQuestion({ question, questionNumber, total, onAnswer
 
   const isCorrect = selected === question.answer;
 
+  const confettiColors = ['#a855f7', '#ec4899', '#22d3ee', '#facc15', '#4ade80', '#f97316'];
+  const confettiPieces = Array.from({ length: 24 }, (_, i) => ({
+    left: `${Math.floor((i / 24) * 100)}%`,
+    color: confettiColors[i % confettiColors.length],
+    delay: `${(i * 0.06).toFixed(2)}s`,
+    duration: `${(2.5 + Math.random() * 2.5).toFixed(2)}s`,
+    size: i % 3 === 0 ? '16px' : '12px',
+  }));
+
+  const sadFaces = ['😢', '😞', '😟', '😿', '💧'];
+  const sadPieces = Array.from({ length: 16 }, (_, i) => ({
+    left: `${Math.floor((i / 16) * 100)}%`,
+    emoji: sadFaces[i % sadFaces.length],
+    delay: `${(i * 0.07).toFixed(2)}s`,
+    duration: `${(2.5 + Math.random() * 2.5).toFixed(2)}s`,
+  }));
+
   return (
-    <div className="bg-[#1a1a2e] border border-white/10 rounded-2xl shadow-md p-6 w-full max-w-2xl mx-auto">
+    <div className="relative bg-[#1a1a2e] border border-white/10 rounded-2xl shadow-md p-6 w-full max-w-2xl mx-auto">
+      {showResult && isCorrect && (
+        <div className="confetti-container">
+          {confettiPieces.map((p, i) => (
+            <div
+              key={i}
+              className="confetti-piece"
+              style={{ left: p.left, backgroundColor: p.color, animationDelay: p.delay, animationDuration: p.duration, width: p.size, height: p.size }}
+            />
+          ))}
+        </div>
+      )}
+      {showResult && !isCorrect && (
+        <div className="confetti-container">
+          {sadPieces.map((p, i) => (
+            <div
+              key={i}
+              className="sadface-piece"
+              style={{ left: p.left, animationDelay: p.delay, animationDuration: p.duration }}
+            >
+              {p.emoji}
+            </div>
+          ))}
+        </div>
+      )}
       {/* Progress bar */}
       <div className="flex items-center gap-3 mb-4">
         <div className="flex-1 bg-white/10 rounded-full h-2">
